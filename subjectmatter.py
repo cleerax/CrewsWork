@@ -1,14 +1,4 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'untitled.ui'
-#
-# Created by: PyQt5 UI code generator 5.13.2
-#
-# WARNING! All changes made in this file will be lost!
-
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-import sys
 
 
 class Node:
@@ -42,15 +32,17 @@ class Node:
 class LOS:
     def __init__(self):
         self.first = None
-        self.last = None
         self.length = 0
 
     def add(self, x):
         self.length += 1
         if self.first == None:
-            self.first = self.last = Node(x, None)
+            self.first = Node(x, None)
         else:
-            self.last.next = self.last = Node(x, None)
+            current = self.first
+            while current.next:
+                current = current.next
+            current.next = Node(x, None)
 
     def getLength(self):
         return self.length
@@ -61,18 +53,25 @@ class LOS:
     def find(self, item):
         current = self.first
         while current is not None:
-            if current.getValue() == item:
+            if current.value == item:
                 return current
             current = current.next
         return None
 
     def delete(self, item):
         chk = False
+        if not self.first.next and self.first.value == item:
+            self.first = None
+            return
+        elif self.first.value == item:
+            self.first = self.first.next
+            return
         current = self.first
         while current is not None:
-            if current.next == item:
+            if current.next and current.next.value == item:
                 current.next = current.next.next
                 chk = True
+                break
             current = current.next
         if not chk:
             raise Exception("Данного элемента нет")
@@ -81,12 +80,12 @@ class LOS:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(790, 680)
+        MainWindow.resize(767, 657)
         MainWindow.setTabletTracking(False)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox.setGeometry(QtCore.QRect(10, 10, 371, 621))
+        self.groupBox.setGeometry(QtCore.QRect(10, 10, 371, 601))
         self.groupBox.setObjectName("groupBox")
         self.plainTextEdit = QtWidgets.QPlainTextEdit(self.groupBox)
         self.plainTextEdit.setGeometry(QtCore.QRect(10, 50, 181, 31))
@@ -104,15 +103,22 @@ class Ui_MainWindow(object):
         self.plainTextEdit_2 = QtWidgets.QPlainTextEdit(self.groupBox)
         self.plainTextEdit_2.setGeometry(QtCore.QRect(200, 50, 104, 31))
         self.plainTextEdit_2.setObjectName("plainTextEdit_2")
+        self.pushButton_2 = QtWidgets.QPushButton(self.groupBox)
+        self.pushButton_2.setGeometry(QtCore.QRect(120, 120, 131, 31))
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_2.clicked.connect(self.btn2Clicked)
+        self.textBrowser = QtWidgets.QTextBrowser(self.groupBox)
+        self.textBrowser.setGeometry(QtCore.QRect(10, 300, 351, 291))
+        self.textBrowser.setObjectName("textBrowser")
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_2.setGeometry(QtCore.QRect(390, 10, 371, 621))
+        self.groupBox_2.setGeometry(QtCore.QRect(390, 10, 371, 601))
         self.groupBox_2.setObjectName("groupBox_2")
         self.listWidget = QtWidgets.QListWidget(self.groupBox_2)
-        self.listWidget.setGeometry(QtCore.QRect(10, 30, 351, 331))
+        self.listWidget.setGeometry(QtCore.QRect(10, 30, 351, 561))
         self.listWidget.setObjectName("listWidget")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 790, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 767, 22))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -125,11 +131,12 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Предметный указатель"))
-        self.groupBox.setTitle(_translate("MainWindow", "GroupBox"))
-        self.pushButton.setText(_translate("MainWindow", "Добавить слово"))
+        self.groupBox.setTitle(_translate("MainWindow", "Формирование"))
+        self.pushButton.setText(_translate("MainWindow", "Добавить"))
         self.label.setText(_translate("MainWindow", "Введите слово:"))
         self.label_2.setText(_translate("MainWindow", "Введите номер страницы:"))
-        self.groupBox_2.setTitle(_translate("MainWindow", "GroupBox"))
+        self.pushButton_2.setText(_translate("MainWindow", "Удалить"))
+        self.groupBox_2.setTitle(_translate("MainWindow", "Вывод"))
 
     subj = LOS()
 
@@ -141,7 +148,6 @@ class Ui_MainWindow(object):
             current = self.subj.find(self.plainTextEdit.toPlainText().strip())
             if current is None:
                 self.subj.add(self.plainTextEdit.toPlainText().strip())
-                #if self.subj.getFirst().getNext() == None:
                 current = self.subj.getFirst()
                 if current.getNext() is not None:
                     while current.getNext() is not None:
@@ -154,15 +160,43 @@ class Ui_MainWindow(object):
 
             chk = False
             for i in range(self.listWidget.count()):
-                if current.getValue() == self.listWidget.item(i).text().split(' ')[0][:-1]:
-                    self.listWidget.item(i).setText("{0}. {1}".format(current.getValue(), current.printPages()))
+                if current.getValue() == self.listWidget.item(i).text().split(" — ")[0]:
+                    self.listWidget.item(i).setText("{0} — {1}".format(current.getValue(), current.printPages()))
                     chk = True
             if chk == False:
-                self.listWidget.addItem("{0}. {1}".format(current.getValue(), current.printPages()))
+                self.listWidget.addItem("{0} — {1}".format(current.getValue(), current.printPages()))
+            self.textBrowser.append("Добавлено слово {0} на странице {1}".format(current.getValue(), self.plainTextEdit_2.toPlainText().strip()))
         except ValueError:
-            print("Неправильно введена страница")
+            self.textBrowser.append("Неправильно введена страница")
         except Exception as e:
-            print(str(e))
+            self.textBrowser.append(str(e))
+
+    def btn2Clicked(self):
+        try:
+            if self.plainTextEdit.toPlainText().strip() == "" or self.plainTextEdit_2.toPlainText().strip() == "":
+                raise Exception("Поля не заполнены")
+
+            current = self.subj.find(self.plainTextEdit.toPlainText().strip())
+            if not current:
+                raise Exception("Введенного слова нет в указателе")
+
+            page = int(self.plainTextEdit_2.toPlainText().strip())
+            if page not in current.getPages():
+                raise Exception("Введенного слова нет на введенной странице")
+
+            if len(current.getPages()) == 1:
+                current = current.getValue()
+                self.subj.delete(current)
+                for i in range(self.listWidget.count()):
+                    if current == self.listWidget.item(i).text().split(" — ")[0]:
+                        self.listWidget.takeItem(i)
+                        break
+                self.textBrowser.append("Слово {0} удалено из указателя".format(current))
+
+        except ValueError:
+            self.textBrowser.append("Неправильно введена страница")
+        except Exception as e:
+            self.textBrowser.append(str(e))
 
 
 if __name__ == "__main__":

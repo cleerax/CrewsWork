@@ -10,6 +10,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 
+
 class Node:
     def __init__(self, value = None, next = None):
         self.value = value
@@ -18,6 +19,25 @@ class Node:
 
     def addPage(self, page):
         self.pages.append(page)
+
+    def delPage(self, page):
+        self.pages.remove(page)
+
+    def getNext(self):
+        return self.next
+
+    def printPages(self):
+        res = ""
+        for x in self.pages:
+            res += str(x) + ", "
+        return res[:-2]
+
+    def getValue(self):
+        return self.value
+
+    def getPages(self):
+        return self.pages
+
 
 class LOS:
     def __init__(self):
@@ -37,6 +57,26 @@ class LOS:
 
     def getFirst(self):
         return self.first
+
+    def find(self, item):
+        current = self.first
+        while current is not None:
+            if current.getValue() == item:
+                return current
+            current = current.next
+        return None
+
+    def delete(self, item):
+        chk = False
+        current = self.first
+        while current is not None:
+            if current.next == item:
+                current.next = current.next.next
+                chk = True
+            current = current.next
+        if not chk:
+            raise Exception("Данного элемента нет")
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -91,10 +131,38 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "Введите номер страницы:"))
         self.groupBox_2.setTitle(_translate("MainWindow", "GroupBox"))
 
+    subj = LOS()
+
     def btnClicked(self):
-        subj = LOS()
-        subj.add(self.plainTextEdit.toPlainText)
-        self.listWidget.addItem(self.plainTextEdit.toPlainText())
+        try:
+            if self.plainTextEdit.toPlainText().strip() == "" or self.plainTextEdit_2.toPlainText().strip() == "":
+                raise Exception("Поля не заполнены")
+
+            current = self.subj.find(self.plainTextEdit.toPlainText().strip())
+            if current is None:
+                self.subj.add(self.plainTextEdit.toPlainText().strip())
+                #if self.subj.getFirst().getNext() == None:
+                current = self.subj.getFirst()
+                if current.getNext() is not None:
+                    while current.getNext() is not None:
+                        current = current.getNext()
+            if int(self.plainTextEdit_2.toPlainText().strip()) in current.getPages():
+                raise Exception("Данная страница уже введена")
+            if int(self.plainTextEdit_2.toPlainText().strip()) <= 0:
+                raise ValueError()
+            current.addPage(int(self.plainTextEdit_2.toPlainText().strip()))
+
+            chk = False
+            for i in range(self.listWidget.count()):
+                if current.getValue() == self.listWidget.item(i).text().split(' ')[0][:-1]:
+                    self.listWidget.item(i).setText("{0}. {1}".format(current.getValue(), current.printPages()))
+                    chk = True
+            if chk == False:
+                self.listWidget.addItem("{0}. {1}".format(current.getValue(), current.printPages()))
+        except ValueError:
+            print("Неправильно введена страница")
+        except Exception as e:
+            print(str(e))
 
 
 if __name__ == "__main__":

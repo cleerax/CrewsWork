@@ -27,7 +27,7 @@
      </rect>
     </property>
     <property name="title">
-     <string>GroupBox</string>
+     <string>Формирование</string>
     </property>
     <widget class="QPlainTextEdit" name="plainTextEdit">
      <property name="geometry">
@@ -99,7 +99,7 @@
      </rect>
     </property>
     <property name="title">
-     <string>GroupBox</string>
+     <string>Вывод</string>
     </property>
     <widget class="QListWidget" name="listWidget">
      <property name="geometry">
@@ -107,7 +107,7 @@
        <x>10</x>
        <y>30</y>
        <width>351</width>
-       <height>331</height>
+       <height>581</height>
       </rect>
      </property>
     </widget>

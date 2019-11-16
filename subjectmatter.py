@@ -18,7 +18,7 @@ class Node:
 
     def printPages(self):
         res = ""
-        for x in self.pages:
+        for x in sorted(self.pages):
             res += str(x) + ", "
         return res[:-2]
 
@@ -87,9 +87,9 @@ class Ui_MainWindow(object):
         self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox.setGeometry(QtCore.QRect(10, 10, 371, 601))
         self.groupBox.setObjectName("groupBox")
-        self.plainTextEdit = QtWidgets.QPlainTextEdit(self.groupBox)
-        self.plainTextEdit.setGeometry(QtCore.QRect(10, 50, 181, 31))
-        self.plainTextEdit.setObjectName("plainTextEdit")
+        self.lineEdit = QtWidgets.QLineEdit(self.groupBox)
+        self.lineEdit.setGeometry(QtCore.QRect(10, 50, 181, 31))
+        self.lineEdit.setObjectName("lineEdit")
         self.pushButton = QtWidgets.QPushButton(self.groupBox)
         self.pushButton.setGeometry(QtCore.QRect(120, 90, 131, 31))
         self.pushButton.setObjectName("pushButton")
@@ -100,9 +100,9 @@ class Ui_MainWindow(object):
         self.label_2 = QtWidgets.QLabel(self.groupBox)
         self.label_2.setGeometry(QtCore.QRect(200, 30, 171, 16))
         self.label_2.setObjectName("label_2")
-        self.plainTextEdit_2 = QtWidgets.QPlainTextEdit(self.groupBox)
-        self.plainTextEdit_2.setGeometry(QtCore.QRect(200, 50, 104, 31))
-        self.plainTextEdit_2.setObjectName("plainTextEdit_2")
+        self.lineEdit_2 = QtWidgets.QLineEdit(self.groupBox)
+        self.lineEdit_2.setGeometry(QtCore.QRect(200, 50, 104, 31))
+        self.lineEdit_2.setObjectName("lineEdit_2")
         self.pushButton_2 = QtWidgets.QPushButton(self.groupBox)
         self.pushButton_2.setGeometry(QtCore.QRect(120, 120, 131, 31))
         self.pushButton_2.setObjectName("pushButton_2")
@@ -142,21 +142,21 @@ class Ui_MainWindow(object):
 
     def btnClicked(self):
         try:
-            if self.plainTextEdit.toPlainText().strip() == "" or self.plainTextEdit_2.toPlainText().strip() == "":
+            if self.lineEdit.text().strip() == "" or self.lineEdit_2.text().strip() == "":
                 raise Exception("Поля не заполнены")
 
-            current = self.subj.find(self.plainTextEdit.toPlainText().strip())
+            current = self.subj.find(self.lineEdit.text().strip())
             if current is None:
-                self.subj.add(self.plainTextEdit.toPlainText().strip())
+                self.subj.add(self.lineEdit.text().strip())
                 current = self.subj.getFirst()
                 if current.getNext() is not None:
                     while current.getNext() is not None:
                         current = current.getNext()
-            if int(self.plainTextEdit_2.toPlainText().strip()) in current.getPages():
+            if int(self.lineEdit_2.text().strip()) in current.getPages():
                 raise Exception("Данная страница уже введена")
-            if int(self.plainTextEdit_2.toPlainText().strip()) <= 0:
+            if int(self.lineEdit_2.text().strip()) <= 0:
                 raise ValueError()
-            current.addPage(int(self.plainTextEdit_2.toPlainText().strip()))
+            current.addPage(int(self.lineEdit_2.text().strip()))
 
             chk = False
             for i in range(self.listWidget.count()):
@@ -165,7 +165,7 @@ class Ui_MainWindow(object):
                     chk = True
             if chk == False:
                 self.listWidget.addItem("{0} — {1}".format(current.getValue(), current.printPages()))
-            self.textBrowser.append("Добавлено слово {0} на странице {1}".format(current.getValue(), self.plainTextEdit_2.toPlainText().strip()))
+            self.textBrowser.append("Добавлено слово {0} на странице {1}".format(current.getValue(), self.lineEdit_2.text().strip()))
         except ValueError:
             self.textBrowser.append("Неправильно введена страница")
         except Exception as e:
@@ -173,14 +173,14 @@ class Ui_MainWindow(object):
 
     def btn2Clicked(self):
         try:
-            if self.plainTextEdit.toPlainText().strip() == "" or self.plainTextEdit_2.toPlainText().strip() == "":
+            if self.lineEdit.text().strip() == "" or self.lineEdit_2.text().strip() == "":
                 raise Exception("Поля не заполнены")
 
-            current = self.subj.find(self.plainTextEdit.toPlainText().strip())
+            current = self.subj.find(self.lineEdit.text().strip())
             if not current:
                 raise Exception("Введенного слова нет в указателе")
 
-            page = int(self.plainTextEdit_2.toPlainText().strip())
+            page = int(self.lineEdit_2.text().strip())
             if page not in current.getPages():
                 raise Exception("Введенного слова нет на введенной странице")
 

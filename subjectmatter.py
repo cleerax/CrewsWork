@@ -1,6 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 class Node:
     def __init__(self, value = None, next = None):
         self.value = value
@@ -116,6 +115,7 @@ class Ui_MainWindow(object):
         self.listWidget = QtWidgets.QListWidget(self.groupBox_2)
         self.listWidget.setGeometry(QtCore.QRect(10, 30, 351, 561))
         self.listWidget.setObjectName("listWidget")
+        self.listWidget.currentItemChanged.connect(self.listWidgetItemChanged)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 767, 22))
@@ -204,6 +204,11 @@ class Ui_MainWindow(object):
             self.textBrowser.append("Неправильно введена страница")
         except Exception as e:
             self.textBrowser.append(str(e))
+
+    def listWidgetItemChanged(self):
+        data = self.listWidget.currentItem().text().split(" ")
+        self.lineEdit.setText(data[0])
+        self.lineEdit_2.setText(data[-1])
 
 
 if __name__ == "__main__":

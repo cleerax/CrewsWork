@@ -1,4 +1,7 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, Qt
+import sqlite3
+import os
+
 
 class Node:
     def __init__(self, value = None, next = None):
@@ -36,12 +39,18 @@ class LOS:
     def add(self, x):
         self.length += 1
         if self.first == None:
-            self.first = Node(x, None)
+            if isinstance(x, Node):
+                self.first = x
+            else:
+                self.first = Node(x, None)
         else:
             current = self.first
             while current.next:
                 current = current.next
-            current.next = Node(x, None)
+            if isinstance(x, Node):
+                current.next = x
+            else:
+                current.next = Node(x, None)
 
     def getLength(self):
         return self.length
@@ -79,18 +88,21 @@ class LOS:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(767, 657)
+        MainWindow.resize(765, 604)
         MainWindow.setTabletTracking(False)
+        MainWindow.setStyleSheet("QPushButton {border: 1px solid grey; border-radius: 5px; background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde)}\n"
+"QPushButton:pressed { background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #dadbde, stop: 1 #E5CCFF) }")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.groupBox = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox.setGeometry(QtCore.QRect(10, 10, 371, 601))
+        self.groupBox.setGeometry(QtCore.QRect(10, 0, 371, 601))
         self.groupBox.setObjectName("groupBox")
         self.lineEdit = QtWidgets.QLineEdit(self.groupBox)
         self.lineEdit.setGeometry(QtCore.QRect(10, 50, 181, 31))
         self.lineEdit.setObjectName("lineEdit")
+        self.lineEdit.returnPressed.connect(self.btnClicked)
         self.pushButton = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton.setGeometry(QtCore.QRect(120, 90, 131, 31))
+        self.pushButton.setGeometry(QtCore.QRect(10, 90, 81, 31))
         self.pushButton.setObjectName("pushButton")
         self.pushButton.clicked.connect(self.btnClicked)
         self.label = QtWidgets.QLabel(self.groupBox)
@@ -102,28 +114,30 @@ class Ui_MainWindow(object):
         self.lineEdit_2 = QtWidgets.QLineEdit(self.groupBox)
         self.lineEdit_2.setGeometry(QtCore.QRect(200, 50, 104, 31))
         self.lineEdit_2.setObjectName("lineEdit_2")
+        self.lineEdit_2.returnPressed.connect(self.btnClicked)
         self.pushButton_2 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_2.setGeometry(QtCore.QRect(120, 120, 131, 31))
+        self.pushButton_2.setGeometry(QtCore.QRect(110, 90, 81, 31))
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_2.clicked.connect(self.btn2Clicked)
         self.textBrowser = QtWidgets.QTextBrowser(self.groupBox)
         self.textBrowser.setGeometry(QtCore.QRect(10, 300, 351, 291))
         self.textBrowser.setObjectName("textBrowser")
+        self.pushButton_3 = QtWidgets.QPushButton(self.groupBox)
+        self.pushButton_3.setGeometry(QtCore.QRect(10, 150, 231, 32))
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.pushButton_3.clicked.connect(self.btn3Clicked)
+        self.pushButton_4 = QtWidgets.QPushButton(self.groupBox)
+        self.pushButton_4.setGeometry(QtCore.QRect(10, 190, 231, 32))
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.pushButton_4.clicked.connect(self.btn4Clicked)
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_2.setGeometry(QtCore.QRect(390, 10, 371, 601))
+        self.groupBox_2.setGeometry(QtCore.QRect(390, 0, 371, 601))
         self.groupBox_2.setObjectName("groupBox_2")
         self.listWidget = QtWidgets.QListWidget(self.groupBox_2)
         self.listWidget.setGeometry(QtCore.QRect(10, 30, 351, 561))
         self.listWidget.setObjectName("listWidget")
         self.listWidget.currentItemChanged.connect(self.listWidgetItemChanged)
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 767, 22))
-        self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -136,6 +150,8 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "Введите слово:"))
         self.label_2.setText(_translate("MainWindow", "Введите номер страницы:"))
         self.pushButton_2.setText(_translate("MainWindow", "Удалить"))
+        self.pushButton_3.setText(_translate("MainWindow", "Сохранить предметный указатель"))
+        self.pushButton_4.setText(_translate("MainWindow", "Загрузить предметный указатель"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Вывод"))
 
     subj = LOS()
@@ -200,15 +216,80 @@ class Ui_MainWindow(object):
                         self.listWidget.item(i).setText("{0} — {1}".format(current.getValue(), current.printPages()))
                         break
                 self.textBrowser.append("Слово {0} удалено со страницы {1}".format(current.getValue(), page))
+                self.lineEdit_2.setText(str(current.getPages()[-1]))
         except ValueError:
             self.textBrowser.append("Неправильно введена страница")
         except Exception as e:
             self.textBrowser.append(str(e))
 
+    def btn3Clicked(self):
+        try:
+            sname = QtWidgets.QFileDialog.getSaveFileName(MainWindow, "Save file", "", "*.db")[0]
+            if sname.strip() == "":
+                raise Exception("Сохранение отменено")
+            if os.path.exists(sname):
+                os.remove(sname)
+
+            sql = sqlite3.connect(sname)
+            cursor = sql.cursor()
+            
+            cursor.executescript("""CREATE TABLE words(id ineteger, word text);
+                                    CREATE TABLE pages(id integer, page integer);""")
+            current = self.subj.getFirst()
+            iden = 1
+            while current:
+                word = current.getValue()
+                pages = current.getPages()
+                cursor.execute("INSERT INTO words VALUES(?, ?)", (iden, word))
+                for page in pages:
+                    cursor.execute("INSERT INTO pages VALUES(?, ?)", (iden, page))
+                iden += 1
+                current = current.getNext()
+            sql.commit()
+            sql.close()
+            self.textBrowser.append("Указатель сохранен успешно")
+        except sqlite3.DatabaseError as e:
+            self.textBrowser.append("Ошибка при сохранении: " + str(e))
+        except Exception as e:
+            self.textBrowser.append(str(e))
+
+    def btn4Clicked(self):
+        try:
+            lname = QtWidgets.QFileDialog.getOpenFileName(MainWindow, "Load file", "", "*.db")[0]
+            if lname.strip() == "":
+                raise Exception("Загрузка отменена")
+
+            self.subj = LOS()
+
+            sql = sqlite3.connect(lname)
+            cursor = sql.cursor()
+            cursor2 = sql.cursor()
+
+            for row in cursor.execute("SELECT * FROM words"):
+                word = Node(row[1])
+                for row2 in cursor2.execute("SELECT * FROM pages"):
+                    if row2[0] == row[0]:
+                        word.addPage(row2[1])
+                self.subj.add(word)
+
+            self.listWidget.clear()
+            current = self.subj.getFirst()
+            while current:
+                self.listWidget.addItem("{0} — {1}".format(current.getValue(), current.printPages()))
+                current = current.getNext()
+
+            sql.close()
+            self.textBrowser.append("Предметный указатель загружен")
+        except sqlite3.DatabaseError as e:
+            self.textBrowser.append("Ошибка при загрузке: " + str(e))
+        except Exception as e:
+            self.textBrowser.append(str(e))
+
     def listWidgetItemChanged(self):
-        data = self.listWidget.currentItem().text().split(" ")
-        self.lineEdit.setText(data[0])
-        self.lineEdit_2.setText(data[-1])
+        if self.listWidget.currentItem():
+            data = self.listWidget.currentItem().text().split(" ")
+            self.lineEdit.setText(data[0])
+            self.lineEdit_2.setText(data[-1])
 
 
 if __name__ == "__main__":

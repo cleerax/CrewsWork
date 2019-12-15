@@ -120,7 +120,7 @@ class Ui_MainWindow(object):
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_2.clicked.connect(self.btn2Clicked)
         self.textBrowser = QtWidgets.QTextBrowser(self.groupBox)
-        self.textBrowser.setGeometry(QtCore.QRect(10, 300, 351, 291))
+        self.textBrowser.setGeometry(QtCore.QRect(10, 310, 351, 281))
         self.textBrowser.setObjectName("textBrowser")
         self.pushButton_3 = QtWidgets.QPushButton(self.groupBox)
         self.pushButton_3.setGeometry(QtCore.QRect(10, 150, 231, 32))
@@ -131,12 +131,54 @@ class Ui_MainWindow(object):
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_4.clicked.connect(self.btn4Clicked)
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
-        self.groupBox_2.setGeometry(QtCore.QRect(390, 0, 371, 601))
+        self.groupBox_2.setGeometry(QtCore.QRect(390, 280, 371, 321))
         self.groupBox_2.setObjectName("groupBox_2")
         self.listWidget = QtWidgets.QListWidget(self.groupBox_2)
-        self.listWidget.setGeometry(QtCore.QRect(10, 30, 351, 561))
+        self.listWidget.setGeometry(QtCore.QRect(10, 30, 351, 281))
         self.listWidget.setObjectName("listWidget")
         self.listWidget.currentItemChanged.connect(self.listWidgetItemChanged)
+        self.groupBox_3 = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBox_3.setGeometry(QtCore.QRect(390, 0, 371, 281))
+        self.groupBox_3.setObjectName("groupBox_3")
+        self.label_3 = QtWidgets.QLabel(self.groupBox_3)
+        self.label_3.setGeometry(QtCore.QRect(10, 20, 351, 16))
+        self.label_3.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_3.setObjectName("label_3")
+        self.pushButton_5 = QtWidgets.QPushButton(self.groupBox_3)
+        self.pushButton_5.setGeometry(QtCore.QRect(100, 70, 171, 21))
+        self.pushButton_5.setObjectName("pushButton_5")
+        self.pushButton_5.clicked.connect(self.btn5Clicked)
+        self.comboBox = QtWidgets.QComboBox(self.groupBox_3)
+        self.comboBox.setGeometry(QtCore.QRect(10, 40, 351, 26))
+        self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.label_4 = QtWidgets.QLabel(self.groupBox_3)
+        self.label_4.setGeometry(QtCore.QRect(10, 100, 351, 16))
+        self.label_4.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_4.setObjectName("label_4")
+        self.lineEdit_3 = QtWidgets.QLineEdit(self.groupBox_3)
+        self.lineEdit_3.setGeometry(QtCore.QRect(10, 120, 351, 31))
+        self.lineEdit_3.setObjectName("lineEdit_3")
+        self.pushButton_6 = QtWidgets.QPushButton(self.groupBox_3)
+        self.pushButton_6.setGeometry(QtCore.QRect(10, 160, 351, 21))
+        self.pushButton_6.setObjectName("pushButton_6")
+        self.pushButton_6.clicked.connect(self.btn6Clicked)
+        self.pushButton_7 = QtWidgets.QPushButton(self.groupBox_3)
+        self.pushButton_7.setGeometry(QtCore.QRect(10, 190, 351, 21))
+        self.pushButton_7.setObjectName("pushButton_7")
+        self.pushButton_7.clicked.connect(self.btn7Clicked)
+        self.pushButton_8 = QtWidgets.QPushButton(self.groupBox_3)
+        self.pushButton_8.setGeometry(QtCore.QRect(10, 250, 351, 21))
+        self.pushButton_8.setStyleSheet("QPushButton {border: 1px solid grey; border-radius: 5px; background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #ff0000)}QPushButton:pressed { background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ff0000, stop: 1 #E5CCFF) }")
+        self.pushButton_8.setObjectName("pushButton_8")
+        self.pushButton_8.clicked.connect(self.btn8Clicked)
+        self.pushButton_9 = QtWidgets.QPushButton(self.groupBox_3)
+        self.pushButton_9.setGeometry(QtCore.QRect(10, 220, 351, 21))
+        self.pushButton_9.setStyleSheet("QPushButton {border: 1px solid grey; border-radius: 5px; background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #0080ff)}\n"
+"QPushButton:pressed { background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #0080ff, stop: 1 #E5CCFF) }")
+        self.pushButton_9.setObjectName("pushButton_9")
+        self.pushButton_9.clicked.connect(self.btn9Clicked)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -153,6 +195,16 @@ class Ui_MainWindow(object):
         self.pushButton_3.setText(_translate("MainWindow", "Сохранить предметный указатель"))
         self.pushButton_4.setText(_translate("MainWindow", "Загрузить предметный указатель"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Вывод"))
+        self.groupBox_3.setTitle(_translate("MainWindow", "Операции с указателем"))
+        self.label_3.setText(_translate("MainWindow", "-----Сортировка-----"))
+        self.pushButton_5.setText(_translate("MainWindow", "Отсортировать"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "По алфавиту"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "По алфавиту в обратном порядке"))
+        self.label_4.setText(_translate("MainWindow", "-----Поиск-----"))
+        self.pushButton_6.setText(_translate("MainWindow", "Найти слова, содержащие введенную строку"))
+        self.pushButton_7.setText(_translate("MainWindow", "Найти слова, которые есть на введенной странице"))
+        self.pushButton_8.setText(_translate("MainWindow", "Отменить поиск и сортировку"))
+        self.pushButton_9.setText(_translate("MainWindow", "Сохранить изменения"))
 
     subj = LOS()
 
@@ -161,9 +213,9 @@ class Ui_MainWindow(object):
             if self.lineEdit.text().strip() == "" or self.lineEdit_2.text().strip() == "":
                 raise Exception("Поля не заполнены")
 
-            current = self.subj.find(self.lineEdit.text().strip())
+            current = self.subj.find(self.lineEdit.text().strip().lower().capitalize())
             if current is None:
-                self.subj.add(self.lineEdit.text().strip())
+                self.subj.add(self.lineEdit.text().strip().lower().capitalize())
                 current = self.subj.getFirst()
                 if current.getNext() is not None:
                     while current.getNext() is not None:
@@ -192,7 +244,7 @@ class Ui_MainWindow(object):
             if self.lineEdit.text().strip() == "" or self.lineEdit_2.text().strip() == "":
                 raise Exception("Поля не заполнены")
 
-            current = self.subj.find(self.lineEdit.text().strip())
+            current = self.subj.find(self.lineEdit.text().strip().lower().capitalize())
             if not current:
                 raise Exception("Введенного слова нет в указателе")
 
@@ -272,11 +324,7 @@ class Ui_MainWindow(object):
                         word.addPage(row2[1])
                 self.subj.add(word)
 
-            self.listWidget.clear()
-            current = self.subj.getFirst()
-            while current:
-                self.listWidget.addItem("{0} — {1}".format(current.getValue(), current.printPages()))
-                current = current.getNext()
+            self.printSubj()
 
             sql.close()
             self.textBrowser.append("Предметный указатель загружен")
@@ -285,11 +333,83 @@ class Ui_MainWindow(object):
         except Exception as e:
             self.textBrowser.append(str(e))
 
+    def btn5Clicked(self):
+        if self.comboBox.currentIndex() == 0:
+            self.listWidget.sortItems()
+            self.textBrowser.append("Указатель отсортирован по алфавиту")
+        if self.comboBox.currentIndex() == 1:
+            self.listWidget.sortItems(Qt.Qt.DescendingOrder)
+            self.textBrowser.append("Указатель отсортирован по алфавиту в обратном порядке")
+
+    def btn6Clicked(self):
+        try:
+            if self.lineEdit_3.text().strip() == "":
+                raise Exception("Фильтр поиска не введен")
+            self.listWidget.clear()
+            current = self.subj.getFirst()
+            n = 0
+            while current:
+                if self.lineEdit_3.text().strip().lower() in current.getValue().lower():
+                    self.listWidget.addItem("{0} — {1}".format(current.getValue(), current.printPages()))
+                    n += 1
+                current = current.getNext()
+            if self.listWidget.count() == 0:
+                self.printSubj()
+                raise Exception("Совпадений не найдено")
+            self.textBrowser.append("Совпадений найлено: " + str(n))
+        except Exception as e:
+            self.textBrowser.append(str(e))
+
+    def btn7Clicked(self):
+        try:
+            if self.lineEdit_3.text().strip() == "":
+                raise Exception("Фильтр поиска не введен")
+            page = int(self.lineEdit_3.text().strip())
+            self.listWidget.clear()
+            current = self.subj.getFirst()
+            n = 0
+            while current:
+                if page in current.getPages():
+                    self.listWidget.addItem("{0} — {1}".format(current.getValue(), current.printPages()))
+                    n += 1
+                current = current.getNext()
+            if self.listWidget.count() == 0:
+                self.printSubj()
+                raise Exception("Совпадений не найдено")
+            self.textBrowser.append("Совпадений найдено: " + str(n))
+        except ValueError:
+            self.textBrowser.append("Неправильна введена страница")
+        except Exception as e:
+            self.textBrowser.append(str(e))
+
+    def btn8Clicked(self):
+        self.printSubj()
+        self.textBrowser.append("Изменения отменены")
+
+    def btn9Clicked(self):
+        self.subj = LOS()
+        for i in range(self.listWidget.count()):
+            item = self.listWidget.item(i).text()
+            word, pages = item.split(" — ")
+            pages = list(map(int, pages.split(", ")))
+            word = Node(word)
+            for page in pages:
+                word.addPage(page)
+            self.subj.add(word)
+        self.textBrowser.append("Изменения сохранены")
+
     def listWidgetItemChanged(self):
         if self.listWidget.currentItem():
             data = self.listWidget.currentItem().text().split(" ")
             self.lineEdit.setText(data[0])
             self.lineEdit_2.setText(data[-1])
+
+    def printSubj(self):
+        self.listWidget.clear()
+        current = self.subj.getFirst()
+        while current:
+            self.listWidget.addItem("{0} — {1}".format(current.getValue(), current.printPages()))
+            current = current.getNext()
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, Qt
 import sqlite3
 import os
+import re
 
 
 class Node:
@@ -98,38 +99,44 @@ class Ui_MainWindow(object):
         self.groupBox.setGeometry(QtCore.QRect(10, 0, 371, 601))
         self.groupBox.setObjectName("groupBox")
         self.lineEdit = QtWidgets.QLineEdit(self.groupBox)
-        self.lineEdit.setGeometry(QtCore.QRect(10, 50, 181, 31))
+        self.lineEdit.setGeometry(QtCore.QRect(10, 90, 181, 31))
         self.lineEdit.setObjectName("lineEdit")
         self.lineEdit.returnPressed.connect(self.btnClicked)
         self.pushButton = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton.setGeometry(QtCore.QRect(10, 90, 81, 31))
+        self.pushButton.setGeometry(QtCore.QRect(10, 130, 81, 31))
         self.pushButton.setObjectName("pushButton")
         self.pushButton.clicked.connect(self.btnClicked)
         self.label = QtWidgets.QLabel(self.groupBox)
-        self.label.setGeometry(QtCore.QRect(10, 30, 101, 16))
+        self.label.setGeometry(QtCore.QRect(10, 70, 101, 16))
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.groupBox)
-        self.label_2.setGeometry(QtCore.QRect(200, 30, 171, 16))
+        self.label_2.setGeometry(QtCore.QRect(200, 70, 171, 16))
         self.label_2.setObjectName("label_2")
         self.lineEdit_2 = QtWidgets.QLineEdit(self.groupBox)
-        self.lineEdit_2.setGeometry(QtCore.QRect(200, 50, 104, 31))
+        self.lineEdit_2.setGeometry(QtCore.QRect(200, 90, 104, 31))
         self.lineEdit_2.setObjectName("lineEdit_2")
         self.lineEdit_2.returnPressed.connect(self.btnClicked)
         self.pushButton_2 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_2.setGeometry(QtCore.QRect(110, 90, 81, 31))
+        self.pushButton_2.setGeometry(QtCore.QRect(110, 130, 81, 31))
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_2.clicked.connect(self.btn2Clicked)
         self.textBrowser = QtWidgets.QTextBrowser(self.groupBox)
         self.textBrowser.setGeometry(QtCore.QRect(10, 310, 351, 281))
         self.textBrowser.setObjectName("textBrowser")
         self.pushButton_3 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_3.setGeometry(QtCore.QRect(10, 150, 231, 32))
+        self.pushButton_3.setGeometry(QtCore.QRect(10, 190, 231, 32))
         self.pushButton_3.setObjectName("pushButton_3")
         self.pushButton_3.clicked.connect(self.btn3Clicked)
         self.pushButton_4 = QtWidgets.QPushButton(self.groupBox)
-        self.pushButton_4.setGeometry(QtCore.QRect(10, 190, 231, 32))
+        self.pushButton_4.setGeometry(QtCore.QRect(10, 230, 231, 32))
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_4.clicked.connect(self.btn4Clicked)
+        self.pushButton_10 = QtWidgets.QPushButton(self.groupBox)
+        self.pushButton_10.setGeometry(QtCore.QRect(10, 30, 351, 32))
+        self.pushButton_10.setObjectName("pushButton_10")
+        self.pushButton_10.clicked.connect(self.btn10Clicked)
+        self.pushButton_10.setStyleSheet("QPushButton {border: 1px solid grey; border-radius: 5px; background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #21c400)}\n"
+"QPushButton:pressed { background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #21c400, stop: 1 #E5CCFF) }")
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_2.setGeometry(QtCore.QRect(390, 280, 371, 321))
         self.groupBox_2.setObjectName("groupBox_2")
@@ -194,6 +201,7 @@ class Ui_MainWindow(object):
         self.pushButton_2.setText(_translate("MainWindow", "Удалить"))
         self.pushButton_3.setText(_translate("MainWindow", "Сохранить предметный указатель"))
         self.pushButton_4.setText(_translate("MainWindow", "Загрузить предметный указатель"))
+        self.pushButton_10.setText(_translate("MainWindow", "Составить указатель по текстовому файлу"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Вывод"))
         self.groupBox_3.setTitle(_translate("MainWindow", "Операции с указателем"))
         self.label_3.setText(_translate("MainWindow", "-----Сортировка-----"))
@@ -276,7 +284,7 @@ class Ui_MainWindow(object):
 
     def btn3Clicked(self):
         try:
-            sname = QtWidgets.QFileDialog.getSaveFileName(MainWindow, "Save file", "", "*.db")[0]
+            sname = QtWidgets.QFileDialog.getSaveFileName(MainWindow, "Save file", "", "Database (*.db)")[0]
             if sname.strip() == "":
                 raise Exception("Сохранение отменено")
             if os.path.exists(sname):
@@ -356,7 +364,7 @@ class Ui_MainWindow(object):
             if self.listWidget.count() == 0:
                 self.printSubj()
                 raise Exception("Совпадений не найдено")
-            self.textBrowser.append("Совпадений найлено: " + str(n))
+            self.textBrowser.append("Совпадений найдено: " + str(n))
         except Exception as e:
             self.textBrowser.append(str(e))
 
@@ -397,6 +405,23 @@ class Ui_MainWindow(object):
                 word.addPage(page)
             self.subj.add(word)
         self.textBrowser.append("Изменения сохранены")
+
+    def btn10Clicked(self):
+        try:
+            lname = QtWidgets.QFileDialog.getOpenFileName(MainWindow, "Open File", "", "Text Files (*.txt);;All Files (*.*)")[0]
+            if lname.strip() == "":
+                raise Exception("Формирование отменено")
+
+            file1 = open(lname, 'r')
+            for line in file1:
+                for word in re.split("['.',:;\"\' '?''!'-+=/—-]", line):
+                    print(word)
+                    
+
+        except UnicodeDecodeError:
+            self.textBrowser.append("Ошибка при чтении: выбран неверный файл")
+        except Exception as e:
+            self.textBrowser.append(str(e))
 
     def listWidgetItemChanged(self):
         if self.listWidget.currentItem():

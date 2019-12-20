@@ -37,7 +37,7 @@ QPushButton:pressed { background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2:
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>50</y>
+       <y>90</y>
        <width>181</width>
        <height>31</height>
       </rect>
@@ -47,7 +47,7 @@ QPushButton:pressed { background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2:
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>90</y>
+       <y>130</y>
        <width>81</width>
        <height>31</height>
       </rect>
@@ -60,7 +60,7 @@ QPushButton:pressed { background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2:
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>30</y>
+       <y>70</y>
        <width>101</width>
        <height>16</height>
       </rect>
@@ -73,7 +73,7 @@ QPushButton:pressed { background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2:
      <property name="geometry">
       <rect>
        <x>200</x>
-       <y>30</y>
+       <y>70</y>
        <width>171</width>
        <height>16</height>
       </rect>
@@ -86,7 +86,7 @@ QPushButton:pressed { background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2:
      <property name="geometry">
       <rect>
        <x>200</x>
-       <y>50</y>
+       <y>90</y>
        <width>104</width>
        <height>31</height>
       </rect>
@@ -96,7 +96,7 @@ QPushButton:pressed { background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2:
      <property name="geometry">
       <rect>
        <x>110</x>
-       <y>90</y>
+       <y>130</y>
        <width>81</width>
        <height>31</height>
       </rect>
@@ -119,7 +119,7 @@ QPushButton:pressed { background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2:
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>150</y>
+       <y>190</y>
        <width>231</width>
        <height>32</height>
       </rect>
@@ -132,13 +132,30 @@ QPushButton:pressed { background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2:
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>190</y>
+       <y>230</y>
        <width>231</width>
        <height>32</height>
       </rect>
      </property>
      <property name="text">
       <string>Загрузить предметный указатель</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_10">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>351</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {border: 1px solid grey; border-radius: 5px; background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #21c400)}
+QPushButton:pressed { background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #21c400, stop: 1 #E5CCFF) }</string>
+     </property>
+     <property name="text">
+      <string>Составить указатель по текстовому файлу</string>
      </property>
     </widget>
    </widget>
